@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
@@ -9,9 +10,11 @@ export default function HomeScreen() {
         alignItems: "center",
         backgroundColor: "#fff",
       }}>
-      <Text style={{ fontSize: 20, fontFamily: "outfit-bold" }}>
-        Welcome to the Pet Adoption App!
-      </Text>
+      <Link href={"/login"}>
+        <Text style={{ fontSize: 20, fontFamily: "outfit-bold" }}>
+          Go to login screen
+        </Text>
+      </Link>
     </View>
   );
 }
