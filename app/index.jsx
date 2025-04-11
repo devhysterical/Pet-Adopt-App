@@ -1,7 +1,9 @@
-import { Link } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
+import { Link, Redirect } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function HomeScreen() {
+export default function Index() {
+  const { user } = useUser();
   return (
     <View
       style={{
@@ -10,11 +12,7 @@ export default function HomeScreen() {
         alignItems: "center",
         backgroundColor: "#fff",
       }}>
-      <Link href={"/login"}>
-        <Text style={{ fontSize: 20, fontFamily: "outfit-bold" }}>
-          Go to login screen
-        </Text>
-      </Link>
+      {user ? <Redirect href={"/(tabs)/home"} /> : <Redirect href={"/login"} />}
     </View>
   );
 }
