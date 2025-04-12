@@ -9,7 +9,7 @@ import React, { useCallback, useEffect } from "react";
 import Colors from "../../constants/Colors";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
-import { useSSO, useClerk } from "@clerk/clerk-expo";
+import { useSSO, useClerk, useAuth } from "@clerk/clerk-expo"; // Thêm useAuth
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 
@@ -31,6 +31,7 @@ export default function LoginScreen() {
   useWarmUpBrowser();
   const { startSSOFlow } = useSSO();
   const clerk = useClerk();
+  const { isSignedIn, isLoaded } = useAuth(); // Thêm hook kiểm tra đăng nhập
   const router = useRouter();
 
   // Hệ số để tính toán kích thước tương đối
@@ -41,24 +42,22 @@ export default function LoginScreen() {
     return Math.round(size * scale);
   };
 
-  // Hàm để xóa cache token
-  const clearCache = async () => {
-    try {
-      await SecureStore.deleteItemAsync("clerk-js-sdk");
-      console.log("Đã xóa cache token Clerk");
-    } catch (err) {
-      console.error("Lỗi khi xóa cache:", err);
-    }
-  };
-
   const onPress = useCallback(async () => {
     try {
-      // Xóa cache trước khi bắt đầu flow mới
-      await clearCache();
+      // Kiểm tra nếu dữ liệu Clerk đã được tải xong
+      if (!isLoaded) {
+        console.log("Đang tải dữ liệu xác thực...");
+        return;
+      }
 
-      // Đảm bảo đóng bất kỳ phiên xác thực nào còn đang mở
-      await WebBrowser.coolDownAsync();
+      // Kiểm tra nếu người dùng đã đăng nhập
+      if (isSignedIn) {
+        console.log("Người dùng đã đăng nhập, chuyển hướng đến home");
+        router.replace("/(tabs)/home");
+        return;
+      }
 
+      // Nếu chưa đăng nhập, tiến hành flow đăng nhập
       console.log("Bắt đầu quá trình đăng nhập Google...");
       const { createdSessionId, setActive } = await startSSOFlow({
         strategy: "oauth_google",
@@ -81,7 +80,7 @@ export default function LoginScreen() {
     } catch (err) {
       console.error("Lỗi đăng nhập:", JSON.stringify(err, null, 2));
     }
-  }, [startSSOFlow, router]);
+  }, [startSSOFlow, router, isSignedIn, isLoaded]);
 
   return (
     <View style={{ backgroundColor: Colors.WHITE, flex: 1 }}>
@@ -89,13 +88,13 @@ export default function LoginScreen() {
         source={require("../../assets/images/login.jpg")}
         style={{
           width: "100%",
-          height: height * 0.5, // 50% chiều cao màn hình
+          height: height * 0.5,
           resizeMode: "cover",
         }}
       />
       <View
         style={{
-          padding: width * 0.05, // 5% chiều rộng màn hình
+          padding: width * 0.05,
           alignItems: "center",
           flex: 1,
           justifyContent: "space-between",
@@ -112,7 +111,6 @@ export default function LoginScreen() {
           </Text>
           <Text
             style={{
-              // fontWeight: "bold",
               fontSize: normalize(18),
               fontFamily: "outfit-bold",
               textAlign: "center",
@@ -126,11 +124,11 @@ export default function LoginScreen() {
         <Pressable
           onPress={onPress}
           style={{
-            padding: width * 0.035, // Tương đương ~14px trên iPhone 8
+            padding: width * 0.035,
             backgroundColor: Colors.PRIMARY,
             width: "100%",
             borderRadius: 15,
-            marginBottom: height * 0.05, // Margin bottom để tránh quá sát đáy màn hình
+            marginBottom: height * 0.05,
           }}>
           <Text
             style={{
