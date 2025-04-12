@@ -1,10 +1,17 @@
-import { View, Text, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  useWindowDimensions,
+} from "react-native";
 import React, { useCallback, useEffect } from "react";
 import Colors from "../../constants/Colors";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import { useSSO, useClerk } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
+import { useRouter } from "expo-router";
 
 export const useWarmUpBrowser = () => {
   useEffect(() => {
@@ -18,9 +25,21 @@ export const useWarmUpBrowser = () => {
 WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen() {
+  // Lấy kích thước màn hình
+  const { width, height } = useWindowDimensions();
+
   useWarmUpBrowser();
   const { startSSOFlow } = useSSO();
   const clerk = useClerk();
+  const router = useRouter();
+
+  // Hệ số để tính toán kích thước tương đối
+  const scale = Math.min(width, height) / 375; // 375 là chiều rộng cơ sở (iPhone 8)
+
+  // Hàm tính fontsize tương đối
+  const normalize = (size) => {
+    return Math.round(size * scale);
+  };
 
   // Hàm để xóa cache token
   const clearCache = async () => {
@@ -55,58 +74,68 @@ export default function LoginScreen() {
       if (createdSessionId) {
         await setActive({ session: createdSessionId });
         console.log("Đăng nhập thành công!");
+        router.replace("/(tabs)/home");
       } else {
         console.log("Không nhận được createdSessionId");
       }
     } catch (err) {
       console.error("Lỗi đăng nhập:", JSON.stringify(err, null, 2));
     }
-  }, [startSSOFlow]);
+  }, [startSSOFlow, router]);
 
   return (
-    <View style={{ backgroundColor: Colors.WHITE, height: "100%" }}>
-      {/* Phần code giao diện giữ nguyên */}
+    <View style={{ backgroundColor: Colors.WHITE, flex: 1 }}>
       <Image
         source={require("../../assets/images/login.jpg")}
         style={{
           width: "100%",
-          height: 500,
+          height: height * 0.5, // 50% chiều cao màn hình
           resizeMode: "cover",
         }}
       />
-      <View style={{ padding: 20, alignItems: "center" }}>
-        <Text
-          style={{
-            fontSize: 24,
-            fontFamily: "outfit-bold",
-            textAlign: "center",
-          }}>
-          Are you ready to find your new best friend?{"\n"}
-        </Text>
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: 18,
-            fontFamily: "outfit",
-            textAlign: "center",
-            color: Colors.GRAY,
-          }}>
-          Let's get started by creating an account and finding your perfect pet!
-          {"\n"}
-        </Text>
+      <View
+        style={{
+          padding: width * 0.05, // 5% chiều rộng màn hình
+          alignItems: "center",
+          flex: 1,
+          justifyContent: "space-between",
+        }}>
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              fontSize: normalize(20),
+              fontFamily: "outfit-bold",
+              textAlign: "center",
+              marginBottom: height * 0.02,
+            }}>
+            Are you ready to find your new best friend?
+          </Text>
+          <Text
+            style={{
+              // fontWeight: "bold",
+              fontSize: normalize(18),
+              fontFamily: "outfit-bold",
+              textAlign: "center",
+              color: Colors.GRAY,
+            }}>
+            Let's get started by creating an account and finding your perfect
+            pet!
+          </Text>
+        </View>
+
         <Pressable
           onPress={onPress}
           style={{
-            padding: 14,
-            marginTop: 100,
+            padding: width * 0.035, // Tương đương ~14px trên iPhone 8
             backgroundColor: Colors.PRIMARY,
             width: "100%",
             borderRadius: 15,
+            marginBottom: height * 0.05, // Margin bottom để tránh quá sát đáy màn hình
           }}>
           <Text
             style={{
-              fontFamily: "outfit-medium",
-              fontSize: 20,
+              fontFamily: "outfit-bold",
+              fontSize: normalize(20),
               textAlign: "center",
             }}>
             Get Started
