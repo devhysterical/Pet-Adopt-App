@@ -17,7 +17,6 @@ export default function Sliders() {
     setSlidersList([]);
     const snapShot = await getDocs(collection(db, "Sliders"));
     snapShot.forEach((doc) => {
-      console.log(doc.data());
       setSlidersList((prev) => [...prev, doc.data()]);
     });
   };
@@ -32,7 +31,7 @@ export default function Sliders() {
         data={slidersList}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
+        // keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View>
             <Image
