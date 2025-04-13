@@ -9,7 +9,7 @@ import React, { useCallback, useEffect } from "react";
 import Colors from "../../constants/Colors";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
-import { useSSO, useClerk, useAuth } from "@clerk/clerk-expo"; // Thêm useAuth
+import { useSSO, useClerk, useAuth } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 
