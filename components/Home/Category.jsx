@@ -11,7 +11,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../config/FirebaseConfig";
 import Colors from "./../../constants/Colors";
 
-export default function Category() {
+export default function Category({ category }) {
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Dogs");
   // Get Categories from Firestore
@@ -30,7 +30,7 @@ export default function Category() {
   return (
     <View
       style={{
-        marginTop: 20,
+        marginTop: 5,
       }}>
       <Text
         style={{
@@ -47,6 +47,7 @@ export default function Category() {
           <TouchableOpacity
             onPress={() => {
               setSelectedCategory(item?.name);
+              category(item?.name);
             }}
             style={{
               flex: 1,
