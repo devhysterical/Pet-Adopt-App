@@ -1,10 +1,13 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
+import { useRouter } from "expo-router";
 
 export default function PetListItem({ pets }) {
+  const router = useRouter();
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => router.push({ pathname: "/pet-details", params: pets })}
       style={{
         padding: 10,
         marginRight: 10,
@@ -53,6 +56,6 @@ export default function PetListItem({ pets }) {
           {pets?.age}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
