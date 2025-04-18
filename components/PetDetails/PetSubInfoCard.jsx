@@ -16,13 +16,11 @@ export default function PetSubInfoCard({ icon, title, value }) {
         gap: 8,
         flex: 1,
       }}>
-      <Image
-        source={icon}
-        style={{ width: 40, height: 40 }}
-      />
-      <View style={{
-        flex: 1,
-      }}>
+      <Image source={icon} style={{ width: 40, height: 40 }} />
+      <View
+        style={{
+          flex: 1,
+        }}>
         <Text
           style={{
             fontFamily: "outfit",

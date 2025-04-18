@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("screen").width * 0.9,
     height: 180,
     borderRadius: 15,
-    marginBottom: 15,
+    marginRight: 15,
   },
 });
