@@ -11,8 +11,8 @@ export default function Home() {
   return (
     <View
       style={{
-        padding: 20,
-        marginTop: 20,
+        padding: 15,
+        marginTop: 15,
       }}>
       {/* Headers */}
       <Header />
@@ -31,7 +31,7 @@ export default function Home() {
             fontFamily: "outfit-medium",
             fontSize: 15,
           }}>
-          Add new Pet
+          Thêm thú cưng mới
         </Text>
       </TouchableOpacity>
     </View>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     gap: 10,
     alignItems: "center",
     padding: 18,
-    marginTop: 12,
+    marginTop: 8,
     borderWidth: 1,
     borderRadius: 15,
     backgroundColor: Colors.LIGHT_PRIMARY,

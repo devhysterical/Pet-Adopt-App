@@ -14,7 +14,7 @@ import Colors from "./../../constants/Colors";
 export default function Category({ category }) {
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Dogs");
-  // Get Categories from Firestore
+  // Lấy danh sách danh mục từ Firestore
   const getCategories = async () => {
     setCategoryList([]);
     const snapShot = await getDocs(collection(db, "Categorys"));
@@ -37,7 +37,7 @@ export default function Category({ category }) {
           fontFamily: "outfit-medium",
           fontSize: 20,
         }}>
-        Category
+        Danh mục
       </Text>
       <FlatList
         data={categoryList}

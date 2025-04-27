@@ -107,7 +107,7 @@ export default function LoginScreen() {
               textAlign: "center",
               marginBottom: height * 0.02,
             }}>
-            Are you ready to find your new best friend?
+            Bạn đã sẵn sàng để tìm kiếm thú cưng cho riêng bạn?
           </Text>
           <Text
             style={{
@@ -116,8 +116,7 @@ export default function LoginScreen() {
               textAlign: "center",
               color: Colors.GRAY,
             }}>
-            Let's get started by creating an account and finding your perfect
-            pet!
+            Hãy bắt đầu hành trình bằng cách nhấn vào nút bên dưới!!!
           </Text>
         </View>
 
@@ -136,7 +135,7 @@ export default function LoginScreen() {
               fontSize: normalize(20),
               textAlign: "center",
             }}>
-            Get Started
+            Bắt đầu
           </Text>
         </Pressable>
       </View>

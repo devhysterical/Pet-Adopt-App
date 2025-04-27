@@ -18,7 +18,7 @@ export default function Header() {
             fontFamily: "outfit",
             fontSize: 18,
           }}>
-          Welcome,
+          Xin chào,
         </Text>
         <Text
           style={{

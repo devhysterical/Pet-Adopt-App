@@ -13,7 +13,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
+          title: "Trang chủ",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="home" size={24} color={color} />
@@ -23,7 +23,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="favorite"
         options={{
-          title: "Favorite",
+          title: "Yêu thích",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="heart" size={24} color={color} />
@@ -33,7 +33,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="inbox"
         options={{
-          title: "Inbox",
+          title: "Hộp thư",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="chatbox" size={24} color={color} />
@@ -43,7 +43,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: "Hồ sơ",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="people" size={24} color={color} />

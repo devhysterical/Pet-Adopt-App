@@ -42,7 +42,7 @@ export default function PetDetails() {
               fontFamily: "outfit-medium",
               fontSize: 20,
             }}>
-            Adopt Now
+            Nhận nuôi {pet?.name}
           </Text>
         </TouchableOpacity>
       </View>

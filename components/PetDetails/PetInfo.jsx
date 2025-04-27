@@ -1,6 +1,7 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import MarkFav from "./MarkFav";
 
 export default function PetInfo({ pet }) {
   return (
@@ -40,7 +41,7 @@ export default function PetInfo({ pet }) {
             {pet?.address}
           </Text>
         </View>
-        <MaterialCommunityIcons name="heart-outline" size={30} color="black" />
+        <MarkFav pet={pet} />
       </View>
     </View>
   );

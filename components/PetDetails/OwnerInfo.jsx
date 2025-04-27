@@ -25,7 +25,7 @@ export default function OwnerInfo({ pet }) {
               fontFamily: "outfit",
               color: Colors.GRAY,
             }}>
-            Pet Owner
+            Chủ sở hữu
           </Text>
         </View>
       </View>

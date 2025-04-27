@@ -8,7 +8,7 @@ import PetListItem from "./PetListItem";
 export default function PetListByCategory() {
   const [petList, setPetList] = useState([]);
   const [loading, setLoading] = useState(false);
-  // Get Pets by Category from Firestore
+  // Lấy danh sách thú cưng theo danh mục từ Firestore
   const getPetListByCategory = async (category) => {
     setLoading(true);
     setPetList([]);
