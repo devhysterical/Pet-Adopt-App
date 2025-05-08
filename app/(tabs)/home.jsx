@@ -6,6 +6,7 @@ import Category from "../../components/Home/Category";
 import PetListByCategory from "../../components/Home/PetListByCategory";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Colors from "../../constants/Colors";
+import { Link } from "expo-router";
 
 export default function Home() {
   return (
@@ -24,7 +25,7 @@ export default function Home() {
       <PetListByCategory />
 
       {/* Add new Pet  */}
-      <TouchableOpacity style={styles.addNewPetContainer}>
+      <Link style={styles.addNewPetContainer} href={"/add-new-pet"}>
         <MaterialIcons name="pets" size={24} color="black" />
         <Text
           style={{
@@ -33,7 +34,7 @@ export default function Home() {
           }}>
           Thêm thú cưng mới
         </Text>
-      </TouchableOpacity>
+      </Link>
     </View>
   );
 }
@@ -51,5 +52,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.LIGHT_PRIMARY,
     borderColor: Colors.BLACK,
     justifyContent: "center",
+    textAlign: "center",
   },
 });
