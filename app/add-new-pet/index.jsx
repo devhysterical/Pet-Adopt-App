@@ -95,7 +95,7 @@ export default function AddNewPet() {
     const docId = Date.now().toString();
     await setDoc(doc(db, "Pets", docId), {
       ...formData,
-      image: base64ImageUrl,
+      imageUrl: base64ImageUrl,
       username: user?.fullName,
       email: user?.primaryEmailAddress?.emailAddress,
       userImage: user?.imageUrl,
