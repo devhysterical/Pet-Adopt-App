@@ -9,21 +9,21 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState, useCallback } from "react"; // Thêm useCallback
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import {
   collection,
   doc,
   getDoc,
-  addDoc, // Thêm addDoc
-  onSnapshot, // Thêm onSnapshot
-  query, // Thêm query
-  orderBy, // Thêm orderBy
-  Timestamp, // Thêm Timestamp để tạo timestamp chuẩn
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "../../config/FirebaseConfig";
 import { useUser } from "@clerk/clerk-expo";
-import Colors from "../../constants/Colors"; // Giả sử bạn có file Colors
+import Colors from "../../constants/Colors";
 
 export default function ChatScreen() {
   const params = useLocalSearchParams();
