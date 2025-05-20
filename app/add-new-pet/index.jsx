@@ -254,7 +254,7 @@ export default function AddNewPet() {
           <Text
             style={{
               fontFamily: "outfit-medium",
-              fontSize: 15,
+              fontSize: 20,
               textAlign: "center",
               color: Colors.WHITE,
             }}>
