@@ -93,9 +93,10 @@ export default function Inbox() {
       }}>
       <Text
         style={{
-          fontFamily: "outfit-medium",
+          fontFamily: "outfit-bold",
           fontSize: 28,
           marginBottom: 10,
+          textAlign: "center",
         }}>
         Hộp thư
       </Text>
@@ -106,13 +107,22 @@ export default function Inbox() {
         refreshing={loading}
         onRefresh={GetChatList}
         data={displayedUsers}
-        renderItem={({ item }) => (
-          <UserItem userInfo={item} />
-        )}
-        keyExtractor={(item, index) => item.chatDocumentId || item.email || index.toString()}
-        ListEmptyComponent={() => (
-          !loading && <Text style={{ textAlign: 'center', marginTop: 20, color: Colors.GRAY }}>Không có cuộc trò chuyện nào.</Text>
-        )}
+        renderItem={({ item }) => <UserItem userInfo={item} />}
+        keyExtractor={(item, index) =>
+          item.chatDocumentId || item.email || index.toString()
+        }
+        ListEmptyComponent={() =>
+          !loading && (
+            <Text
+              style={{
+                textAlign: "center",
+                marginTop: 20,
+                color: Colors.GRAY,
+              }}>
+              Không có cuộc trò chuyện nào.
+            </Text>
+          )
+        }
       />
     </View>
   );

@@ -15,18 +15,24 @@ export default function Profile() {
     },
     {
       id: 2,
+      name: "Bài đăng của tôi",
+      icon: "document-text",
+      path: "/user-post",
+    },
+    {
+      id: 3,
       name: "Yêu thích",
       icon: "heart",
       path: "/(tabs)/favorite",
     },
     {
-      id: 3,
+      id: 4,
       name: "Hộp thư",
       icon: "mail",
       path: "/(tabs)/inbox",
     },
     {
-      id: 4,
+      id: 5,
       name: "Đăng xuất",
       icon: "log-out",
     },
@@ -37,7 +43,7 @@ export default function Profile() {
   const onPressMenu = (item) => {
     if (item?.path) {
       router.push(item?.path);
-    } else if (item?.id === 4) {
+    } else if (item?.id === 5) {
       signOut();
       router.push("/login");
       return;
@@ -51,8 +57,9 @@ export default function Profile() {
       }}>
       <Text
         style={{
-          fontFamily: "outfit-medium",
+          fontFamily: "outfit-bold",
           fontSize: 25,
+          textAlign: "center",
         }}>
         Trang cá nhân
       </Text>
@@ -61,7 +68,9 @@ export default function Profile() {
         style={{
           display: "flex",
           alignItems: "center",
-          martinVertical: 25,
+          marginVertical: 25,
+          // marginTop: 15,
+          // padding: 15,
         }}>
         <Image
           source={{ uri: user?.imageUrl }}

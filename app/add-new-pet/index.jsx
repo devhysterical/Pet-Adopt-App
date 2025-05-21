@@ -96,8 +96,8 @@ export default function AddNewPet() {
     await setDoc(doc(db, "Pets", docId), {
       ...formData,
       imageUrl: base64ImageUrl,
-      username: user?.fullName,
-      email: user?.primaryEmailAddress?.emailAddress,
+      userName: user?.fullName,
+      userEmail: user?.primaryEmailAddress?.emailAddress,
       userImage: user?.imageUrl,
       id: docId,
     });
@@ -106,6 +106,7 @@ export default function AddNewPet() {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: "Thêm thú cưng mới",
+      headerTitleAlign: "center",
     });
     getCategories();
   }, []);
@@ -115,13 +116,13 @@ export default function AddNewPet() {
       style={{
         padding: 15,
       }}>
-      <Text
+      {/* <Text
         style={{
           fontFamily: "outfit-medium",
           fontSize: 20,
         }}>
         Thêm thú cưng cho thuê
-      </Text>
+      </Text> */}
       {/* Ảnh thú cưng */}
       <Pressable onPress={imagePicker}>
         {!image ? (

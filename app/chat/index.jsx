@@ -4,7 +4,7 @@ import {
   StyleSheet,
   FlatList,
   TextInput,
-  Button,
+  Pressable, // Thay Button bằng Pressable để dễ tùy chỉnh style
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
@@ -24,6 +24,7 @@ import {
 import { db } from "../../config/FirebaseConfig";
 import { useUser } from "@clerk/clerk-expo";
 import Colors from "../../constants/Colors";
+// import { Ionicons } from '@expo/vector-icons';
 
 export default function ChatScreen() {
   const params = useLocalSearchParams();
@@ -33,12 +34,22 @@ export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(true);
-  const [chatPartnerName, setChatPartnerName] = useState("Chat");
+  // const [chatPartnerName, setChatPartnerName] = useState("Chat");
 
   const chatId = params?.id;
+
   useEffect(() => {
+    navigation.setOptions({
+      headerTitleAlign: "center",
+      headerStyle: {
+        // backgroundColor: Colors.PRIMARY_LIGHT,
+      },
+      headerTintColor: Colors.BLACK,
+    });
+
     if (!chatId || !user?.primaryEmailAddress?.emailAddress) {
       setLoading(false);
+      navigation.setOptions({ headerTitle: "Chat không hợp lệ" });
       return;
     }
 
@@ -52,7 +63,7 @@ export default function ChatScreen() {
             (item) => item.email !== user.primaryEmailAddress.emailAddress
           );
           if (otherUser?.name) {
-            setChatPartnerName(otherUser.name);
+            // setChatPartnerName(otherUser.name);
             navigation.setOptions({
               headerTitle: otherUser.name,
             });
@@ -84,7 +95,7 @@ export default function ChatScreen() {
       await addDoc(collection(doc(db, "Chat", chatId), "messages"), {
         text: text.trim(),
         sender: user.primaryEmailAddress.emailAddress,
-        senderName: user.fullName || "Người gửi",
+        senderName: user.fullName || user.firstName || "Người gửi",
         timestamp: Timestamp.now(),
       });
       setText("");
@@ -133,20 +144,34 @@ export default function ChatScreen() {
       return (
         <View
           style={[
-            styles.messageBubble,
-            isMyMessage ? styles.myMessage : styles.otherMessage,
+            styles.messageRow,
+            isMyMessage ? styles.myMessageRow : styles.otherMessageRow,
           ]}>
-          {!isMyMessage && (
-            <Text style={styles.senderName}>
-              {item.senderName || item.sender.split("@")[0]}
+          <View
+            style={[
+              styles.messageBubble,
+              isMyMessage ? styles.myMessageBubble : styles.otherMessageBubble,
+            ]}>
+            {!isMyMessage && item.senderName && (
+              <Text style={styles.senderName}>{item.senderName}</Text>
+            )}
+            <Text
+              style={[
+                styles.messageText,
+                isMyMessage ? styles.myMessageText : styles.otherMessageText,
+              ]}>
+              {item.text}
             </Text>
-          )}
-          <Text style={styles.messageText}>{item.text}</Text>
-          <Text style={styles.timestamp}>
-            {item.timestamp
-              ?.toDate()
-              .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-          </Text>
+            <Text
+              style={[
+                styles.timestamp,
+                isMyMessage ? styles.myTimestamp : styles.otherTimestamp,
+              ]}>
+              {item.timestamp
+                ?.toDate()
+                .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </Text>
+          </View>
         </View>
       );
     },
@@ -157,22 +182,22 @@ export default function ChatScreen() {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color={Colors.PRIMARY} />
-        <Text>Đang tải tin nhắn...</Text>
+        <Text style={styles.loadingText}>Đang tải tin nhắn...</Text>
       </View>
     );
   }
 
-  if (!chatId) {
+  if (!chatId && !loading) {
     return (
       <View style={styles.centered}>
-        <Text>Không tìm thấy ID cuộc trò chuyện.</Text>
+        <Text style={styles.errorText}>Không tìm thấy ID cuộc trò chuyện.</Text>
       </View>
     );
   }
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}>
       <FlatList
@@ -180,10 +205,15 @@ export default function ChatScreen() {
         renderItem={renderMessageItem}
         keyExtractor={(item) => item.id}
         style={styles.messagesList}
-        contentContainerStyle={{ paddingBottom: 10 }}
+        contentContainerStyle={styles.messagesListContent}
+        inverted={messages.length > 0}
         ListEmptyComponent={
           !loading ? (
-            <Text style={styles.centeredText}>Chưa có tin nhắn nào.</Text>
+            <View style={styles.centered}>
+              <Text style={styles.emptyChatText}>
+                Chưa có tin nhắn nào.{"\n"}Hãy bắt đầu cuộc trò chuyện!
+              </Text>
+            </View>
           ) : null
         }
       />
@@ -193,84 +223,156 @@ export default function ChatScreen() {
           onChangeText={setText}
           style={styles.input}
           placeholder="Nhập tin nhắn..."
+          placeholderTextColor={Colors.GRAY}
           multiline
         />
-        <Button title="Gửi" onPress={sendMessage} disabled={!text.trim()} />
+        <Pressable
+          onPress={sendMessage}
+          disabled={!text.trim()}
+          style={({ pressed }) => [
+            styles.sendButton,
+            !text.trim() && styles.sendButtonDisabled,
+            pressed && styles.sendButtonPressed,
+          ]}>
+          {/* <Ionicons name="send" size={20} color={Colors.WHITE} /> */}
+          <Text style={styles.sendButtonText}>Gửi</Text>
+        </Pressable>
       </View>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.WHITE,
+  },
   centered: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
-  centeredText: {
-    textAlign: "center",
-    marginTop: 20,
+  loadingText: {
+    marginTop: 10,
     fontSize: 16,
     color: Colors.GRAY,
   },
+  errorText: {
+    fontSize: 16,
+    color: Colors.RED,
+    textAlign: "center",
+  },
+  emptyChatText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: Colors.GRAY,
+    lineHeight: 24,
+  },
   messagesList: {
     flex: 1,
+  },
+  messagesListContent: {
     paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  messageRow: {
+    flexDirection: "row",
+    marginVertical: 5,
+  },
+  myMessageRow: {
+    justifyContent: "flex-end",
+  },
+  otherMessageRow: {
+    justifyContent: "flex-start",
   },
   messageBubble: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 15,
-    marginVertical: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 20,
     maxWidth: "80%",
+    elevation: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
   },
-  myMessage: {
+  myMessageBubble: {
     backgroundColor: Colors.PRIMARY,
-    alignSelf: "flex-end",
     borderBottomRightRadius: 5,
   },
-  otherMessage: {
-    backgroundColor: "#E5E5EA",
-    alignSelf: "flex-start",
+  otherMessageBubble: {
+    backgroundColor: Colors.WHITE,
+    borderWidth: 1,
+    borderColor: Colors.LIGHT_GRAY,
     borderBottomLeftRadius: 5,
   },
   senderName: {
-    fontSize: 12,
-    color: Colors.GRAY,
-    marginBottom: 2,
+    fontSize: 13,
+    color: Colors.PRIMARY,
+    marginBottom: 4,
     fontWeight: "bold",
   },
   messageText: {
     fontSize: 16,
-    color: "black",
+    lineHeight: 22,
   },
-  myMessage: {
-    messageText: {
-      color: "white",
-    },
+  myMessageText: {
+    color: Colors.WHITE,
+  },
+  otherMessageText: {
+    color: Colors.DARK_GRAY,
   },
   timestamp: {
-    fontSize: 10,
-    color: Colors.GRAY,
+    fontSize: 11,
+    marginTop: 5,
     alignSelf: "flex-end",
-    marginTop: 2,
+  },
+  myTimestamp: {
+    color: Colors.WHITE_ALPHA_70,
+  },
+  otherTimestamp: {
+    color: Colors.GRAY,
   },
   inputContainer: {
     flexDirection: "row",
-    padding: 10,
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     borderTopWidth: 1,
-    borderTopColor: "#ccc",
-    backgroundColor: "white",
+    borderTopColor: Colors.LIGHT_GRAY,
+    backgroundColor: Colors.WHITE,
   },
   input: {
     flex: 1,
+    backgroundColor: Colors.LIGHT_GRAY_BACKGROUND,
+    borderColor: Colors.MEDIUM_GRAY,
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    borderRadius: 25,
+    paddingHorizontal: 18,
+    paddingVertical: Platform.OS === "ios" ? 12 : 8,
     marginRight: 10,
-    maxHeight: 100,
+    fontSize: 16,
+    maxHeight: 120,
+    color: Colors.DARK_GRAY,
+  },
+  sendButton: {
+    backgroundColor: Colors.PRIMARY,
+    borderRadius: 25,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  sendButtonDisabled: {
+    backgroundColor: Colors.MEDIUM_GRAY,
+  },
+  sendButtonPressed: {
+    backgroundColor: Colors.PRIMARY_DARK,
+  },
+  sendButtonText: {
+    color: Colors.WHITE,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

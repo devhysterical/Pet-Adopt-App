@@ -1,8 +1,16 @@
 export default {
   PRIMARY: "#7edcff",
+  PRIMARY_LIGHT: "#b3e5fc",
+  PRIMARY_DARK: "#5cb8d6",
   SECONDARY: "#4fb3ff",
   GRAY: "#8f8e8d",
+  LIGHT_GRAY: "#E0E0E0",
+  MEDIUM_GRAY: "#B0B0B0",
+  DARK_GRAY: "#4A4A4A",
   WHITE: "#ffffff",
+  WHITE_ALPHA_70: "#FFFFFFB3",
   BLACK: "#000000",
-  LIGHT_PRIMARY: "#cdeefa",
+  RED: "#FF3B30",
+  BACKGROUND: "#f8f9fa", 
+  LIGHT_GRAY_BACKGROUND: "#F0F0F0",
 };
