@@ -83,7 +83,7 @@ export default function Category({ category }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.LIGHT_PRIMARY,
+    backgroundColor: Colors.PRIMARY_LIGHT,
     padding: 15,
     alignItems: "center",
     borderWidth: 1,

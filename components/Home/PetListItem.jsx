@@ -16,12 +16,13 @@ export default function PetListItem({ pets }) {
         backgroundColor: Colors.WHITE,
         borderRadius: 10,
       }}>
-      <View style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-      }}>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
         <MarkFav pet={pets} />
       </View>
       <Image
@@ -57,7 +58,7 @@ export default function PetListItem({ pets }) {
           style={{
             fontFamily: "outfit",
             color: Colors.BLACK,
-            backgroundColor: Colors.LIGHT_PRIMARY,
+            backgroundColor: Colors.PRIMARY_LIGHT,
             borderRadius: 10,
             alignItems: "center",
             textAlign: "center",

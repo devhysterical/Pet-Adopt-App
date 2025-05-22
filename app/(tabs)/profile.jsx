@@ -120,7 +120,7 @@ export default function Profile() {
               color={Colors.PRIMARY}
               style={{
                 padding: 10,
-                backgroundColor: Colors.LIGHT_PRIMARY,
+                backgroundColor: Colors.PRIMARY_LIGHT,
                 borderRadius: 10,
               }}
             />

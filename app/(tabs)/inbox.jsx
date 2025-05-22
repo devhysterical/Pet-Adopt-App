@@ -1,5 +1,12 @@
-import { View, Text, FlatList, ActivityIndicator } from "react-native"; // Thêm ActivityIndicator
-import React, { useEffect, useState, useCallback } from "react"; // Thêm useCallback
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/FirebaseConfig";
 import { useUser } from "@clerk/clerk-expo";
@@ -78,52 +85,79 @@ export default function Inbox() {
 
   if (loading && displayedUsers.length === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.centered}>
         <ActivityIndicator size="large" color={Colors.PRIMARY} />
       </View>
     );
   }
 
   return (
-    <View
-      style={{
-        padding: 15,
-        marginTop: 15,
-        flex: 1,
-      }}>
-      <Text
-        style={{
-          fontFamily: "outfit-bold",
-          fontSize: 28,
-          marginBottom: 10,
-          textAlign: "center",
-        }}>
-        Hộp thư
-      </Text>
-      <FlatList
-        style={{
-          marginTop: 15,
-        }}
-        refreshing={loading}
-        onRefresh={GetChatList}
-        data={displayedUsers}
-        renderItem={({ item }) => <UserItem userInfo={item} />}
-        keyExtractor={(item, index) =>
-          item.chatDocumentId || item.email || index.toString()
-        }
-        ListEmptyComponent={() =>
-          !loading && (
-            <Text
-              style={{
-                textAlign: "center",
-                marginTop: 20,
-                color: Colors.GRAY,
-              }}>
-              Không có cuộc trò chuyện nào.
-            </Text>
-          )
-        }
-      />
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text style={styles.headerTitle}>Hộp thư</Text>
+        <FlatList
+          style={styles.list}
+          contentContainerStyle={styles.listContentContainer}
+          refreshing={loading}
+          onRefresh={GetChatList}
+          data={displayedUsers}
+          renderItem={({ item }) => <UserItem userInfo={item} />}
+          keyExtractor={(item, index) =>
+            item.chatDocumentId || item.email || index.toString()
+          }
+          ListEmptyComponent={() =>
+            !loading && (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>
+                  Không có cuộc trò chuyện nào.
+                </Text>
+              </View>
+            )
+          }
+        />
+      </View>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.BACKGROUND,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
+  headerTitle: {
+    fontFamily: "outfit-bold",
+    fontSize: 30,
+    color: Colors.BLACK,
+    marginTop: 20,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  list: {
+    flex: 1,
+  },
+  listContentContainer: {
+    paddingBottom: 20,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.BACKGROUND,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
+  },
+  emptyText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: Colors.GRAY,
+  },
+});

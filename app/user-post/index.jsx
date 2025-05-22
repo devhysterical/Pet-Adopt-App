@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   deleteBtn: {
-    backgroundColor: Colors.LIGHT_PRIMARY,
+    backgroundColor: Colors.PRIMARY_LIGHT,
     padding: 10,
     borderRadius: 8,
     alignItems: "center",
