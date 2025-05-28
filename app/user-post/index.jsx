@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
-} from "react-native"; // Thêm Alert, ActivityIndicator
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "expo-router";
 import {
@@ -16,7 +16,7 @@ import {
   where,
   doc,
   deleteDoc,
-} from "firebase/firestore"; // Thêm doc, deleteDoc
+} from "firebase/firestore";
 import { db } from "../../config/FirebaseConfig";
 import { useUser } from "@clerk/clerk-expo";
 import PetListItem from "./../../components/Home/PetListItem";

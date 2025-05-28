@@ -4,7 +4,7 @@ import {
   StyleSheet,
   FlatList,
   TextInput,
-  Pressable, // Thay Button bằng Pressable để dễ tùy chỉnh style
+  Pressable,
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
